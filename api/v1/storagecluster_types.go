@@ -143,6 +143,10 @@ type StorageDeviceSet struct {
 	// +optional
 	DeviceType string `json:"deviceType,omitempty"`
 
+	// DeviceTypeSubclass is optional fine-grained property of DeviceType
+	// +optional
+	DeviceTypeSubclass string `json:"deviceTypeSubclass,omitempty"`
+
 	// TopologyKey is the Kubernetes topology label that the
 	// StorageClassDeviceSets will be distributed across. Ignored if
 	// Placement is set

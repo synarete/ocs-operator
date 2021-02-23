@@ -591,8 +591,14 @@ func newStorageClassDeviceSets(sc *ocsv1.StorageCluster, serverVersion *version.
 			}
 
 			// Annotation crushDeviceClass ensures osd with different CRUSH device class than the one detected by Ceph
+			var crushDeviceClass string
+			if ds.DeviceType != "" && ds.DeviceTypeSubclass != "" {
+				crushDeviceClass = ds.DeviceType + "-" + ds.DeviceTypeSubclass
+			} else {
+				crushDeviceClass = ds.DeviceType
+			}
 			annotations := map[string]string{
-				"crushDeviceClass": ds.DeviceType,
+				"crushDeviceClass": crushDeviceClass,
 			}
 			ds.DataPVCTemplate.Annotations = annotations
 

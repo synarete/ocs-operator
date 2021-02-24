@@ -1753,6 +1753,10 @@ spec:
                       - NVME
                       - nvme
                       type: string
+                    deviceTypeSubclass:
+                      description: DeviceTypeSubclass is optional fine-grained property
+                        of DeviceType
+                      type: string
                     metadataPVCTemplate:
                       description: PersistentVolumeClaim is a user's request for and
                         claim to a persistent volume

@@ -625,6 +625,11 @@ func newStorageClassDeviceSets(sc *ocsv1.StorageCluster, serverVersion *version.
 			annotations := map[string]string{
 				"crushDeviceClass": crushDeviceClass,
 			}
+			// Annotation crushInitialWeight is an optinal, explicit weight to set upon OSD's init (as float, in TiB units).
+			// If not set, Ceph will define it based on OSD's capacity.
+			if ds.InitialWeight != "" {
+				annotations["crushInitialWeight"] = ds.InitialWeight
+			}
 			ds.DataPVCTemplate.Annotations = annotations
 
 			set := rook.StorageClassDeviceSet{

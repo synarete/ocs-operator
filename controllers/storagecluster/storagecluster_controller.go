@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-logr/logr"
 	nbv1 "github.com/noobaa/noobaa-operator/v2/pkg/apis/noobaa/v1alpha1"
+	quotav1 "github.com/openshift/client-go/quota/clientset/versioned"
 	conditionsv1 "github.com/openshift/custom-resource-status/conditions/v1"
 	ocsv1 "github.com/openshift/ocs-operator/api/v1"
 	"github.com/openshift/ocs-operator/controllers/util"
@@ -72,6 +73,7 @@ type ImageMap struct {
 //nolint
 type StorageClusterReconciler struct {
 	client.Client
+	QuotaClient    *quotav1.Clientset
 	Log            logr.Logger
 	Scheme         *runtime.Scheme
 	serverVersion  *version.Info

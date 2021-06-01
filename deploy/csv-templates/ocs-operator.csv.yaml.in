@@ -199,6 +199,12 @@ spec:
           - update
           - watch
         - apiGroups:
+          - quota.openshift.io
+          resources:
+          - clusterresourcequotas
+          verbs:
+          - '*'
+        - apiGroups:
           - route.openshift.io
           resources:
           - routes
@@ -268,7 +274,7 @@ spec:
                   valueFrom:
                     fieldRef:
                       fieldPath: metadata.annotations['olm.targetNamespaces']
-                image: quay.io/ocs-dev/ocs-operator:latest
+                image: quay.io/ssharon/ocs-operator:ssharon-ocs-latest
                 imagePullPolicy: Always
                 name: ocs-operator
                 readinessProbe:

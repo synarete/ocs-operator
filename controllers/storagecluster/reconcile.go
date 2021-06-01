@@ -129,6 +129,7 @@ var validTopologyLabelKeys = []string{
 // +kubebuilder:rbac:groups=apiextensions.k8s.io,resources=customresourcedefinitions,verbs=get;list;watch;create;update
 // +kubebuilder:rbac:groups=route.openshift.io,resources=routes,verbs=*
 // +kubebuilder:rbac:groups=coordination.k8s.io,resources=leases,verbs=get;list;create;update
+// +kubebuilder:rbac:groups=quota.openshift.io,resources=clusterresourcequotas,verbs=*
 
 // Reconcile reads that state of the cluster for a StorageCluster object and makes changes based on the state read
 // and what is in the StorageCluster.Spec
@@ -333,6 +334,7 @@ func (r *StorageClusterReconciler) reconcilePhases(
 		// list of default ensure functions
 		objs = []resourceManager{
 			&ocsStorageClass{},
+			&ocsStorageQuota{},
 			&ocsSnapshotClass{},
 			&ocsCephObjectStores{},
 			&ocsCephObjectStoreUsers{},

@@ -1732,6 +1732,12 @@ spec:
           - update
           - watch
         - apiGroups:
+          - quota.openshift.io
+          resources:
+          - clusterresourcequotas
+          verbs:
+          - '*'
+        - apiGroups:
           - route.openshift.io
           resources:
           - routes
@@ -2485,7 +2491,7 @@ spec:
                   value: noobaa/noobaa-core:master-20210609
                 - name: NOOBAA_DB_IMAGE
                   value: centos/postgresql-12-centos7
-                image: quay.io/ocs-dev/ocs-operator:latest
+                image: quay.io/ssharon/ocs-operator:ssharon-ocs-latest
                 imagePullPolicy: Always
                 name: ocs-operator
                 readinessProbe:
@@ -2659,7 +2665,7 @@ spec:
                 - --namespaces=openshift-storage
                 command:
                 - /usr/local/bin/metrics-exporter
-                image: quay.io/ocs-dev/ocs-operator:latest
+                image: quay.io/ssharon/ocs-operator:ssharon-ocs-latest
                 name: ocs-metrics-exporter
                 ports:
                 - containerPort: 8080
@@ -3071,6 +3077,6 @@ spec:
     name: noobaa-core
   - image: centos/postgresql-12-centos7
     name: noobaa-db
-  - image: quay.io/ocs-dev/ocs-must-gather:latest
+  - image: quay.io/ssharon/ocs-must-gather:ssharon-ocs-latest
     name: ocs-must-gather
   version: 4.9.0

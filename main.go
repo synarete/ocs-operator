@@ -29,6 +29,7 @@ import (
 	consolev1 "github.com/openshift/api/console/v1"
 	routev1 "github.com/openshift/api/route/v1"
 	openshiftv1 "github.com/openshift/api/template/v1"
+	quotaclient "github.com/openshift/client-go/quota/clientset/versioned"
 	secv1client "github.com/openshift/client-go/security/clientset/versioned/typed/security/v1"
 	ocsv1 "github.com/openshift/ocs-operator/api/v1"
 	"github.com/openshift/ocs-operator/controllers/ocsinitialization"
@@ -100,7 +101,8 @@ func main() {
 		setupLog.Info("running in development mode")
 	}
 
-	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
+	cfg := ctrl.GetConfigOrDie()
+	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
 		Scheme:                 scheme,
 		MetricsBindAddress:     metricsAddr,
 		HealthProbeBindAddress: probeAddr,
@@ -124,9 +126,10 @@ func main() {
 	}
 
 	if err = (&storagecluster.StorageClusterReconciler{
-		Client: mgr.GetClient(),
-		Log:    ctrl.Log.WithName("controllers").WithName("StorageCluster"),
-		Scheme: mgr.GetScheme(),
+		Client:      mgr.GetClient(),
+		QuotaClient: quotaclient.NewForConfigOrDie(cfg),
+		Log:         ctrl.Log.WithName("controllers").WithName("StorageCluster"),
+		Scheme:      mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "StorageCluster")
 		os.Exit(1)

@@ -18,9 +18,11 @@ package v1
 
 import (
 	nbv1 "github.com/noobaa/noobaa-operator/v2/pkg/apis/noobaa/v1alpha1"
+	quotav1 "github.com/openshift/api/quota/v1"
 	conditionsv1 "github.com/openshift/custom-resource-status/conditions/v1"
 	rook "github.com/rook/rook/pkg/apis/rook.io/v1"
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -67,6 +69,9 @@ type StorageClusterSpec struct {
 	// ArbiterSpec specifies the storage cluster options related to arbiter.
 	// If Arbiter is enabled, ArbiterLocation in the NodeTopologies must be specified.
 	Arbiter ArbiterSpec `json:"arbiter,omitempty"`
+	// Overprovision specifies the allowed hard-limit PVs overprovisioning relative to
+	// the effective usable storage capacity.
+	Overprovision []OverprovisionSpec `json:"overprovision,omitempty"`
 }
 
 // KeyManagementServiceSpec provides a way to enable KMS
@@ -374,4 +379,14 @@ type ArbiterSpec struct {
 
 func init() {
 	SchemeBuilder.Register(&StorageCluster{}, &StorageClusterList{})
+}
+
+// OverprovisionSpec defines the allowed overprovisioning PC consumtion from the underlying cluster.
+// This may be either as an absolute value or as a percentage from the overall effective capacity.
+// When defined in terms of percentages, zero value indicates no over-provisioning.
+type OverprovisionSpec struct {
+	StorageClassName string                               `json:"storageClassName,omitempty"`
+	Capacity         *resource.Quantity                   `json:"capacity,omitempty"`
+	Percentage       uint                                 `json:"percentage,omitempty"`
+	Selector         quotav1.ClusterResourceQuotaSelector `json:"selector,omitempty"`
 }
